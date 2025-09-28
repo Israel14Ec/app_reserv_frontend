@@ -25,6 +25,7 @@ export interface Usuario {
     reset_token: null;
     createdAt:   Date;
     updatedAt:   Date;
+    ci_ruc: string;
 }
 
 export interface Profesional {

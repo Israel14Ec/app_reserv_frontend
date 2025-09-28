@@ -1,7 +1,11 @@
-import { ClipboardClock, FolderKanban } from "lucide-react";
+import { ClipboardClock, FolderKanban, QrCode } from "lucide-react";
 import { LinkHome } from "./LinkHome";
 
-export function AsideDashboard() {
+interface Props {
+  tipoUsuario: string;
+}
+
+export function AsideDashboard({ tipoUsuario }: Props) {
   const Links = [
     {
       href: "/home/servicios",
@@ -23,11 +27,26 @@ export function AsideDashboard() {
       label: "Gestionar cita",
       icon: <FolderKanban />,
     },
+    {
+      href: "/home/mi-qr",
+      label: "Mi código qr",
+      icon: <QrCode />,
+    },
   ];
 
+  // Filtrar dinámicamente según tipo de usuario
+  const filteredLinks = Links.filter((link) => {
+    if (tipoUsuario === "paciente") {
+      return link.href === "/home/mis-citas";
+    } else if (tipoUsuario === "profesional") {
+      return link.href !== "/home/mis-citas";
+    }
+    return false;
+  });
+
   return (
-    <div className=" px-3 py-5 flex flex-col gap-5 w-full">
-      {Links.map((link, index) => (
+    <div className="px-3 py-5 flex flex-col gap-5 w-full">
+      {filteredLinks.map((link, index) => (
         <LinkHome
           key={index}
           href={link.href}

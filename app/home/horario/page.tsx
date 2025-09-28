@@ -11,7 +11,8 @@ import toast from "react-hot-toast";
 
 export default function HorarioPage() {
   
-    const { getAllHorario, handlerDelete } = useHorario();
+  const [isLoading, setIsLoading] = useState(true)
+  const { getAllHorario, handlerDelete } = useHorario();
   const [horarios, setHorarios] = useState<Horario[]>([])
   const [reload, setReload] = useState(true)
 
@@ -29,6 +30,7 @@ export default function HorarioPage() {
         console.log(error)
     } finally {
         setReload(false)
+        setIsLoading(false)
     }
   }
 
@@ -53,12 +55,12 @@ export default function HorarioPage() {
           </Link>
         </Button>
       </section>
-        { !horarios && (
+        { (!horarios && isLoading) && (
             <p>No existen datos de horario, agregue un nuevo registró</p>
         )}
       <Table className=" mt-5">
         <TableCaption>Lista de horarios registrados</TableCaption>
-        <TableHeader>
+        <TableHeader className="bg-zinc-600">
             <TableRow className=" bg-zinc-700">
                 <TableHead className=" text-white">Dia de atención</TableHead>
                 <TableHead className=" text-white">Hora de inicio</TableHead>

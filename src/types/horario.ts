@@ -28,3 +28,16 @@ export interface Horario {
   createdAt:    Date;
   updatedAt:    Date;
 }
+
+
+/** HORARIO DISPONIBLE */
+export interface HorarioDisponible {
+  id:           number;
+  dia_atencion: string;
+  hora_inicio:  string;
+  hora_fin:     string;
+  createdAt?:    string;
+  updatedAt?:    string;
+  citas:        [];
+  disponible:   boolean;
+}

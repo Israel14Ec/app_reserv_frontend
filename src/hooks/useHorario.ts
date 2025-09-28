@@ -2,7 +2,7 @@ import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import api from "../config/api";
-import { Horario, HorarioForm } from "../types/horario";
+import { Horario, HorarioDisponible, HorarioForm } from "../types/horario";
 
 export const useHorario = () => {
     
@@ -27,10 +27,18 @@ export const useHorario = () => {
         }
     }
 
+    const getHorarioDisponible =async (idProfesional: string, fecha: string) =>  {
+        try {
+            const { data } = await api.get<HorarioDisponible[]>(`v1/horarios/horario-disponible?idProfesional=${idProfesional}&fecha=${fecha}`)
+            return data
+        } catch (error) {
+            throw error
+        }
+    }
+
     const handlerSave = async (dataForm: HorarioForm) => {
         try {
             const { data } = await api.post<{message: string}>(`v1/horarios`, dataForm);
-            console.log(data);
             toast.success(data.message);
             router.push(`/home/horario`)
         } catch (error) {
@@ -79,6 +87,7 @@ export const useHorario = () => {
     return {
         getAllHorario,
         getHorarioById,
+        getHorarioDisponible,
         handlerSave,
         handlerEdit,
         handlerDelete

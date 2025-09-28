@@ -1,12 +1,22 @@
 import toast from "react-hot-toast"
 import api from "../config/api"
-import { PacienteForm } from "../types/paciente"
+import { Paciente, PacienteForm } from "../types/paciente"
 import { isAxiosError } from "axios"
 import { useRouter } from "next/navigation"
 
 export const usePaciente = () => {
 
     const router = useRouter()
+
+     const getAllPaciente = async () => {
+        try {
+            const { data } = await api.get<Paciente[]>(`v1/profesionales`)
+            return data
+        } catch (error) {
+            throw error;
+      }
+        
+    }
 
     const handlerSave = async (dataForm: PacienteForm) => {
         try {
@@ -26,6 +36,7 @@ export const usePaciente = () => {
     }
 
     return {
+        getAllPaciente,
         handlerSave
     }
 }

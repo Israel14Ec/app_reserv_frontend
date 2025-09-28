@@ -18,7 +18,6 @@ export default function LayoutHome({children}: Readonly<{children: React.ReactNo
       setIsLoading(true)
       const response = await getUserWithToken();
       setUsuario(response)
-      //console.log(response.profesional.id)
       const id_profesional = `${response.profesional?.id || ""}`
       const id_paciente = `${response.paciente?.id || ""}`
       localStorage.setItem('id_profesional', id_profesional) //Guarda en local, este id se necesita para las peticiones
@@ -49,7 +48,7 @@ export default function LayoutHome({children}: Readonly<{children: React.ReactNo
       </header>
       <div className=" flex-1 flex flex-row mt-10">
         <aside className="hidden lg:flex border-r-2 py-5 bg-zinc-900 w-72 fixed h-full">
-          <AsideDashboard />
+          <AsideDashboard tipoUsuario={usuario.tipo_usuario} />
         </aside>
         <main className=" w-full p-10 lg:ml-72">
           {children}

@@ -2,11 +2,28 @@ import { isAxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import toast from "react-hot-toast";
 import api from "../config/api";
-import { ProfesionalForm } from "../types/profesional";
+import { Profesional, ProfesionalForm } from "../types/profesional";
 
 export const useProfesional = () => {
-
   const router = useRouter();
+
+  const getAllProfesional = async () => {
+    try {
+      const { data } = await api.get<Profesional[]>(`v1/profesionales`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
+
+  const getProfesionalById = async (idProfesional: string) => {
+    try {
+      const { data } = await api.get<Profesional[]>(`v1/profesionales`);
+      return data;
+    } catch (error) {
+      throw error;
+    }
+  };
 
   const handlerSave = async (dataForm: ProfesionalForm) => {
     try {
@@ -27,8 +44,8 @@ export const useProfesional = () => {
     }
   };
 
-  
   return {
-    handlerSave
+    getAllProfesional,
+    handlerSave,
   };
 };

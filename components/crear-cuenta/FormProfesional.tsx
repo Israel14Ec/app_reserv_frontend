@@ -20,6 +20,7 @@ const FormSchema = z.object({
   name: z.string().min(1, { message: "Campo obligatorio." }),
   email: z.email({ message: "Ingrese email válido" }),
   password: z.string().min(8,{ message: "Ingrese mínimo 8 caracteres." }),
+   ci_ruc: z.string().regex(/^(?:\d{10}|\d{13})$/, {message: "Ingrese 10 o 13, caracteres para el ci o ruc"}),
   celular: z
     .string()
     .regex(/^\d{10}$/, {
@@ -44,7 +45,8 @@ export function FormProfesional() {
       email: "",
       password: "",
       celular: "",
-      descripcion: ""
+      descripcion: "",
+      ci_ruc: ""
     }
   });
 
@@ -56,7 +58,7 @@ export function FormProfesional() {
   return (
         <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className=" space-y-3" noValidate>
-        <div className=" grid grid-cols-2 gap-5">
+        <div className=" grid grid-cols-2 gap-5 items-start">
           <FormField
             name="name"
             control={form.control}
@@ -72,7 +74,26 @@ export function FormProfesional() {
               </FormItem>
             )}
           />
+              <FormField
+            name="ci_ruc"
+            control={form.control}
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>
+                  Cédula o Ruc <span className=" text-rose-500 ml-1">*</span>
+                </FormLabel>
+                <FormControl>
+                  <Input type="text" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
+          
+        </div>
+
+        <div className=" grid grid-cols-2 gap-5 items-start">
           <FormField
             name="email"
             control={form.control}
@@ -88,8 +109,7 @@ export function FormProfesional() {
               </FormItem>
             )}
           />
-        </div>
-        <FormField
+                <FormField
           name="password"
           control={form.control}
           render={({ field }) => (
@@ -104,6 +124,8 @@ export function FormProfesional() {
             </FormItem>
           )}
         />
+        </div>
+  
           <FormField
             name="celular"
             control={form.control}
