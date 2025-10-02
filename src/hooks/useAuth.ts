@@ -10,12 +10,12 @@ export const useAuth = () => {
 
   const login = async (loginForm: Login) => {
     try {
-      const { data } = await api.post<{
-        token: string;
-      }>("v1/auth", loginForm);
+      const { data } = await api.post<{token: string;}>("v1/auth", loginForm);
       //Guardar token
       localStorage.setItem("AUTH_TOKEN", data.token);
-      router.push(`/home/mis-citas`);
+      //Redireccionar dependiendo del rol
+      
+      router.push(`/home`);
     } catch (error) {
       console.log(error);
       if (isAxiosError(error)) {

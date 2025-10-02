@@ -21,21 +21,25 @@ import {
 import { useCita } from "@/src/hooks/useCita";
 import { Cita } from "@/src/types/cita";
 
-import { PencilIcon, Plus, TrashIcon } from "lucide-react";
+import { EyeIcon, PencilIcon, Plus, TrashIcon } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import CardDetailsCita from "@/components/shared/CardDetailsCita";
 
 export default function MisCitasPage() {
   const { getAllCita, handlerDelete } = useCita();
 
+  const [showModal, setShowModal] = useState(false);
+  const [citaSelect, setCitaSelect] = useState<Cita | undefined>(undefined);
+
   const [citas, setCitas] = useState<Cita[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [estado, setEstado] = useState("");
-  const [filter, setFilter] = useState("")
+  const [filter, setFilter] = useState("");
 
   const onFilter = (estado?: string) => {
-    setFilter("")
+    setFilter("");
     const id_paciente = localStorage.getItem("id_paciente");
     if (!id_paciente) {
       toast.error("No existe el id_paciente, vuelva a iniciar sesión");
@@ -45,7 +49,7 @@ export default function MisCitasPage() {
     const filter = `?id_paciente=${id_paciente}${
       estado ? `&estado=${estado}` : ""
     }`;
-    setFilter(estado || "")
+    setFilter(estado || "");
     getData(filter);
   };
 
@@ -173,15 +177,33 @@ export default function MisCitasPage() {
                   className=" text-red-500"
                   type="button"
                   onClick={() => deleteItem(`${item.id}`)}
-                  
                 >
                   <TrashIcon />
+                </Button>
+                <Button
+                  variant={"outline"}
+                  className=" text-green-500"
+                  type="button"
+                  onClick={() => {
+                    setCitaSelect(item);
+                    setShowModal(true);
+                  }}
+                >
+                  <EyeIcon />
                 </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {citaSelect && (
+        <CardDetailsCita
+          showModal={showModal}
+          setShowModal={setShowModal}
+          cita={citaSelect}
+        />
+      )}
     </>
   );
 }

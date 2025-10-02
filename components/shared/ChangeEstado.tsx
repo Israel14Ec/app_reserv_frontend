@@ -53,7 +53,7 @@ export function ChangeEstado({
   return (
     <div className=" flex flex-col gap-1 items-start">  
       <Select value={estado} onValueChange={onChangeSelect}>
-        <SelectTrigger className="w-[220px] justify-between rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-purple-500">
+        <SelectTrigger className="w-[150px] justify-between rounded-xl border-gray-300 shadow-sm focus:ring-2 focus:ring-purple-500">
           {estado ? estado : "Cambiar estado"}
         </SelectTrigger>
 

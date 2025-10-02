@@ -18,7 +18,7 @@ export const useProfesional = () => {
 
   const getProfesionalById = async (idProfesional: string) => {
     try {
-      const { data } = await api.get<Profesional[]>(`v1/profesionales`);
+      const { data } = await api.get<Profesional>(`v1/profesionales/${idProfesional}`);
       return data;
     } catch (error) {
       throw error;
@@ -47,5 +47,6 @@ export const useProfesional = () => {
   return {
     getAllProfesional,
     handlerSave,
+    getProfesionalById
   };
 };

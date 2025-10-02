@@ -42,7 +42,7 @@ export default function LayoutHome({children}: Readonly<{children: React.ReactNo
       <div className=" flex flex-col h-dvh relative">
       <header className="py-3 px-3 lg:px-10 flex justify-between items-center border-b fixed w-full z-10 bg-zinc-800">
         <div className="border-l-2 px-5">
-            <AvatarOptions usuario={usuario.usuario}/>
+            <AvatarOptions usuario={usuario.usuario} tipoUsuario={usuario.tipo_usuario} />
         </div>
         <p className=" text-blue-100 font-bold text-2xl uppercase">{usuario.tipo_usuario === "profesional" ? "Profesional" : "Paciente"} </p>
       </header>

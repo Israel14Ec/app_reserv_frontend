@@ -21,6 +21,9 @@ import { useCita } from "@/src/hooks/useCita";
 import { Cita } from "@/src/types/cita";
 import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
+import { Button } from "@/components/ui/button";
+import { EyeIcon } from "lucide-react";
+import CardDetailsCita from "@/components/shared/CardDetailsCita";
 
 export default function GestionarCita() {
   const { getAllCita } = useCita();
@@ -28,20 +31,23 @@ export default function GestionarCita() {
   const [citas, setCitas] = useState<Cita[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [estado, setEstado] = useState("");
-  const [filter, setFilter] = useState("")
+  const [filter, setFilter] = useState("");
+
+  const [showModal, setShowModal] = useState(false);
+  const [citaSelect, setCitaSelect] = useState<Cita | undefined>(undefined);
 
   const onFilter = (estado?: string) => {
-    setFilter("")
+    setFilter("");
     const id_profesional = localStorage.getItem("id_profesional");
     if (!id_profesional) {
       toast.error("No existe el id_profesional, vuelva a iniciar sesión");
       return;
     }
-  
+
     const filter = `?id_profesional=${id_profesional}${
       estado ? `&estado=${estado}` : ""
     }`;
-    setFilter(estado || "")
+    setFilter(estado || "");
     getData(filter);
   };
 
@@ -106,7 +112,10 @@ export default function GestionarCita() {
             <TableHead className=" text-white">Horas</TableHead>
             <TableHead className=" text-white">Paciente</TableHead>
             <TableHead className=" text-white">Ruc/CI Paciente</TableHead>
-            <TableHead className=" text-white w-[100px]">Cambiar estado</TableHead>
+            <TableHead className=" text-white w-[175px]">
+              Cambiar estado
+            </TableHead>
+            <TableHead className=" text-white">Opciones</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -135,12 +144,34 @@ export default function GestionarCita() {
               </TableCell>
               <TableCell> {item.paciente.usuario.ci_ruc} </TableCell>
               <TableCell>
-                <ChangeEstado tipoUsuario="profesional" idCita={`${item.id}`} estadoCita={item.estado} onFilter={onFilter} filter={filter}/>
+                <ChangeEstado
+                  tipoUsuario="profesional"
+                  idCita={`${item.id}`}
+                  estadoCita={item.estado}
+                  onFilter={onFilter}
+                  filter={filter}
+                />
+              </TableCell>
+              <TableCell>
+                <Button variant={"outline"} className=" text-green-500" onClick={() => {
+                  setCitaSelect(item)
+                  setShowModal(true)
+                }}>
+                  <EyeIcon />
+                </Button>
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
+
+      {citaSelect && (
+        <CardDetailsCita
+          showModal={showModal}
+          setShowModal={setShowModal}
+          cita={citaSelect}
+        />
+      )}
     </>
   );
 }

@@ -24,9 +24,10 @@ import { UsuarioApp } from "@/src/types/usuario";
 
 interface Props {
   usuario: UsuarioApp["usuario"];
+  tipoUsuario: string;
 }
 
-export function AvatarOptions({ usuario }: Props) {
+export function AvatarOptions({ usuario, tipoUsuario}: Props) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
@@ -60,7 +61,6 @@ export function AvatarOptions({ usuario }: Props) {
           </DropdownMenuTrigger>
           <DropdownMenuContent>
             <DropdownMenuLabel>Mi cuenta</DropdownMenuLabel>
-            <DropdownMenuItem>Perfil</DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Button
                 variant={"ghost"}
@@ -79,7 +79,7 @@ export function AvatarOptions({ usuario }: Props) {
           <SheetHeader>
             <SheetTitle className=" text-2xl text-white App">Reserv</SheetTitle>
           </SheetHeader>
-          <AsideDashboard />
+          <AsideDashboard tipoUsuario={tipoUsuario} />
           <SheetFooter>&copy; Reserv App- Derechos reservados</SheetFooter>
         </SheetContent>
       </Sheet>

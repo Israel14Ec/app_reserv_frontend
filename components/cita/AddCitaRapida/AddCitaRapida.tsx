@@ -24,20 +24,18 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import { FormSchema, FormValues, defaultValues } from "./AddEditCita.form";
+import { FormSchema, FormValues, defaultValues } from "./AddCitaRapida.form";
 import Link from "next/link";
+import { FileText } from "lucide-react";
 import ServicioCard from "@/components/shared/ServicioCard";
 
 interface Props {
-  idCita?: string;
+  profesional: Profesional;
 }
 
-export function AddEditCita({ idCita }: Props) {
-  const { handlerSave, getCitaById, handlerEdit } = useCita();
+export function AddCitaRapida({ profesional }: Props) {
+  const { handlerSave, getCitaById } = useCita();
 
-  const [profesional, setProfesional] = useState<Profesional | undefined>(
-    undefined
-  );
   const [servicio, setServicio] = useState<Servicio | undefined>(undefined);
   const [horario, setHorario] = useState<HorarioDisponible | undefined>(
     undefined
@@ -92,10 +90,6 @@ export function AddEditCita({ idCita }: Props) {
     };
 
     console.log(JSON.stringify(dataSend, null, 2));
-    if (idCita) {
-      await handlerEdit(idCita, dataSend);
-      return;
-    }
     await handlerSave(dataSend);
   };
 
@@ -123,12 +117,6 @@ export function AddEditCita({ idCita }: Props) {
     });
   };
 
-  useEffect(() => {
-    if (idCita) {
-      getData(idCita);
-    }
-  }, [idCita]);
-
   return (
     <Form {...form}>
       <form
@@ -152,12 +140,19 @@ export function AddEditCita({ idCita }: Props) {
               </FormItem>
             )}
           />
-          <ProfesionalSearch
-            profesionalSelect={profesional}
-            setProfesionalSelect={setProfesional}
-            profesionalApi={profesionalApi}
+
+          <ServicioSearch
+            idProfesional={`${profesional.id}`}
+            setServicioSelect={setServicio}
+            servicioSelect={servicio}
+            servicioApi={servicioApi}
           />
         </div>
+
+        {servicio && (
+          <ServicioCard servicio={servicio}/>
+        )}
+
         <FormField
           name="nota"
           control={form.control}
@@ -175,16 +170,6 @@ export function AddEditCita({ idCita }: Props) {
           )}
         />
 
-        {profesional && (
-          <ServicioSearch
-            idProfesional={`${profesional.id}`}
-            setServicioSelect={setServicio}
-            servicioSelect={servicio}
-            servicioApi={servicioApi}
-          />
-        )}
-
-        {servicio && <ServicioCard servicio={servicio} />}
         {profesional && fechaCita && (
           <HorarioSearch
             idProfesional={`${profesional.id}`}

@@ -8,6 +8,11 @@ interface Props {
 export function AsideDashboard({ tipoUsuario }: Props) {
   const Links = [
     {
+      href: "/home/gestionar-cita",
+      label: "Gestionar cita",
+      icon: <FolderKanban />,
+    },
+    {
       href: "/home/servicios",
       label: "Mis Servicios",
       icon: <ClipboardClock />,
@@ -23,13 +28,8 @@ export function AsideDashboard({ tipoUsuario }: Props) {
       icon: <ClipboardClock />,
     },
     {
-      href: "/home/gestionar-cita",
-      label: "Gestionar cita",
-      icon: <FolderKanban />,
-    },
-    {
       href: "/home/mi-qr",
-      label: "Mi código qr",
+      label: "Mi código QR",
       icon: <QrCode />,
     },
   ];
